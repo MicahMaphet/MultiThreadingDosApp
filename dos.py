@@ -1,8 +1,6 @@
 import requests
 import threading
 import time
-import random
-import math
 
 continueDos = True
 thread = []
