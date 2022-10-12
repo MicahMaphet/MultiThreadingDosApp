@@ -19,6 +19,7 @@ def dos(webPage_):
         of the code is making it faster via mutliple threads
         and making the software easier to use
         '''
+        print(webPage)
         requests.get(webPage)
         # print("requested:", webPage)
         numRequests += 1
@@ -42,6 +43,7 @@ def initThreads(*webPages):
     numRequests = 0
     threadsinited = 0
     webPages = webPages[0]
+
     # This creates the threads, but does not start it
     for i in range(threads):
         print('created Web Page: {} Thread ID: {} Total Threads: {}'.format(webPages, i, len(webPages)))

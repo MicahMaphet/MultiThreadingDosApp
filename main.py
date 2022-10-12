@@ -1,47 +1,47 @@
 from tkinter import * 
 from PIL import ImageTk, Image
 import threading
-
-from numpy import outer
 import dos
+import fixbadurls as fix
 
 win = Tk ()
 win.title("Bonzi Buddy the Website Dosing Monkey")
-win.iconbitmap('C:\\Users\\micah\\Downloads\\hotpig_icon.ico')
+win.iconbitmap('images\\hotpig_icon.ico')
 win.geometry('600x400+50+50')
 
 results = Label(win)
-results.place(x=0, y = 400)
+results.place(x=200, y = 100)
+
 
 def requestDos():
     global target    
     dos.threads = int(dosThreads.get())
     webPages = []
     for i in range(len(target)):
+        remText = target[i].get()
+        target[i].delete(0, END) # this will delete everything inside the entry
+        target[i].insert(END, fix.makeValid(remText))
         webPages.append(target[i].get())
-    # webPages=webPages[0] # It thinks that it is a list of lists
     dos.initThreads(webPages)
     results['text'] = target[0].get()
-
 
 class mainDosThread (threading.Thread):
     def run(self):
         requestDos()
-
 maindosthread = mainDosThread()
 
 target = []
 targetLen = 1
 target.append(Entry(win, width=25))
-target[0].insert(0, "https://google.com")
+# target[0].insert(0, "https://")
 target[0].place(x=50, y=7)
 
 dosBtn = Button(win, text="Attack", command=maindosthread.start)
 dosBtn.place(x=210, y=5)
 
-my_img = ImageTk.PhotoImage(Image.open("C:\\Users\\micah\\Downloads\\bonzibuddy.png"))
+my_img = ImageTk.PhotoImage(Image.open("images\\bonzibuddy.png"))
 bonzi = Label(image=my_img)
-bonzi.place(x=300, y=300)
+bonzi.place(x=400, y=120)
 
 extraInfo = LabelFrame(win, width=170, height=100)
 extraInfo.place(x=380, y=5)
@@ -59,7 +59,7 @@ dosThreadsExplanation.place(x=5, y=5)
 def addTarget():
     global targetLen, target
     target.append(Entry(win, width=25))
-    target[targetLen].insert(0, "https://")
+    # target[targetLen].insert(0, "https://")
     target[targetLen].place(x=50, y=7 + (20*targetLen))
     targetLen+=1
 
@@ -68,6 +68,7 @@ addTargetButton.place(x=300, y=5)
 
 def stop_Dos():
     dos.continueDos=False
+
 stopDos = Button(win, text="Stop", command=stop_Dos)
 stopDos.place(x=260, y=5)
 
